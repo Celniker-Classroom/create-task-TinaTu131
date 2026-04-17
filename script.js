@@ -62,3 +62,20 @@ function calculateDimension(answers, dim) {
     return dim[1];
   }
 }
+  // startQuiz()- 
+  currentIndex = 0; userAnswers = []; // reset the question number to 0, and clear all previous answers.
+  document. getElementById ("welcome-section").style.display = "none";
+  document.getElementById("quiz-section").style.display = "block";
+  showQuestion();
+  // function to display the first questions
+  //display
+  document.getElementById("question-text").textContent = questions[currentIndex]. text; 
+  "Question"+ (currentIndex+1) + "of" + questions.length // Question 1 of 12 
+  
+  userAnswers.push(answer); // .push() adds an element to the end of a list. // true true false 
+  currentIndex = currentIndex +1; // move to the next question 
+  if (currentIndex < questions.length){
+    showQuestion();
+  } else {
+    showResult();}
+  // list stores 6 questions, each question contains the question text, the dimension it measures ("EI"), and the direction indicates E or indicates
