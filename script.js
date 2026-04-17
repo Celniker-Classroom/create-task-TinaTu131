@@ -9,15 +9,19 @@
 var questions = [
   { text: "Do you feel energized after spending time with other people?", dimension: "EI", direction: "E" },
   { text: "Do you prefer quiet time alone to recharge?", dimension: "EI", direction: "I" },
+  { text: "You find the idea of networking or promoting yourself to strangers very daunting.", dimension: "EI", direction: "I"},
 
   { text: "Do you focus more on concrete facts and details?", dimension: "SN", direction: "S" },
   { text: "Do you enjoy thinking about ideas and future possibilities?", dimension: "SN", direction: "N" },
+  { text: "You are not too interested in discussions about various interpretations of creative works.", dimension: "SN", direction:"S"},
 
   { text: "Do you make decisions based on logic and objective analysis?", dimension: "TF", direction: "T" },
   { text: "Do you consider emotions and people's feelings when making decisions?", dimension: "TF", direction: "F" },
+  { text: "People’s stories and emotions speak louder to you than numbers or data.", dimension: "TF", direction:"F"},
 
   { text: "Do you prefer having a clear plan and schedule?", dimension: "JP", direction: "J" },
-  { text: "Do you like to stay flexible and adapt as things happen?", dimension: "JP", direction: "P" }
+  { text: "Do you like to stay flexible and adapt as things happen?", dimension: "JP", direction: "P" },
+  { text: "You often allow the day to unfold without any schedule at all.", dimension: "JP", direction: "P"},
 ];
 
 var userAnswers = []; // store every question answer 
