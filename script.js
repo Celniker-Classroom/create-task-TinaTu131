@@ -1,11 +1,3 @@
-// add javascript here
-// purpose: discover MBTI type by asking questions
-
-// "start test"
-// input: user responds with a scale (e.g., 1–5 from disagree to agree)
-// output: "Your MBTI Type: ENFP" with a short description
-
-// data abstraction
 var questions = [
   { text: "Do you feel energized after spending time with other people?", dimension: "EI", direction: "E" },
   { text: "Do you prefer quiet time alone to recharge?", dimension: "EI", direction: "I" },
@@ -24,32 +16,25 @@ var questions = [
   { text: "You often allow the day to unfold without any schedule at all.", dimension: "JP", direction: "P"},
 ];
 
-var userAnswers = []; // store every question answer 
-var currentIndex = 0; // track which question is currently being shown
+var userAnswers = []; 
+var currentIndex = 0; 
 
-// calculate dimension result
 function calculateDimension(answers, dim) {
-  // answers: user's answer list (userAnswers)
-  // dim: which dimension to calculate, e.g., "EI", "SN", "TF", "JP"
 
-  var firstCount = 0;  // score for first letter (E)
-  var secondCount = 0; // score for second letter (I)
+  var firstCount = 0;  
+  var secondCount = 0;
 
-  // loop through all questions
   for (var i = 0; i < questions.length; i++) {
 
-    // check if question belongs to the target dimension
     if (questions[i].dimension == dim) {
 
       if (answers[i] == true) {
-        // if user agrees, count toward the direction of the question
         if (questions[i].direction == dim[0]) {
           firstCount++;
         } else {
           secondCount++;
         }
       } else {
-        // if user disagrees, count toward the opposite direction
         if (questions[i].direction == dim[0]) {
           secondCount++;
         } else {
@@ -59,27 +44,65 @@ function calculateDimension(answers, dim) {
     }
   }
 
-  // return the letter with higher score
+
   if (firstCount > secondCount) {
     return dim[0];
   } else {
     return dim[1];
   }
 }
-  // startQuiz()- 
   currentIndex = 0; userAnswers = []; // reset the question number to 0, and clear all previous answers.
   document. getElementById ("welcome-section").style.display = "none";
   document.getElementById("quiz-section").style.display = "block";
   showQuestion();
-  // function to display the first questions
-  //display
+ 
   document.getElementById("question-text").textContent = questions[currentIndex]. text; 
-  "Question"+ (currentIndex+1) + "of" + questions.length // Question 1 of 12 
+  "Question"+ (currentIndex+1) + "of" + questions.length 
   
-  userAnswers.push(answer); // .push() adds an element to the end of a list. // true true false 
-  currentIndex = currentIndex +1; // move to the next question 
+  userAnswers.push(answer); 
+  currentIndex = currentIndex +1;
   if (currentIndex < questions.length){
     showQuestion();
   } else {
     showResult();}
-  // list stores 6 questions, each question contains the question text, the dimension it measures ("EI"), and the direction indicates E or indicates
+
+function showResult() {
+    var letter1 = calculateDimension(userAnswers, "EI");
+    var letter2 = calculateDimension(userAnswers, "SN");
+    var letter3 = calculateDimension(userAnswers, "TF");
+    var letter4 = calculateDimension(userAnswers, "JP");
+
+    var result = letter1 + letter2 + letter3 + letter4;
+
+    document.getElementById("quiz-section").style.display = "none";
+    document.getElementById("result-section").style.display = "block";
+    document.getElementById("result-type").textContent = "Your MBTI Type: " + result;
+    document.getElementById("result-description").textContent = getDescription(result);
+}
+
+function getDescription(type) { 
+    if (type == "ISTJ") { return "The Logistician: Responsible, sincere, and analytical."; }
+    if (type == "ISFJ") { return "The Defender: Dedicated, warm, and protective."; }
+    if (type == "INFJ") { return "The Advocate: Quiet, mystical, and inspiring."; }
+    if (type == "INTJ") { return "The Architect: Imaginative, strategic, and determined."; }
+    if (type == "ISTP") { return "The Virtuoso: Bold, practical, and curious."; }
+    if (type == "ISFP") { return "The Adventurer: Flexible, charming, and artistic."; }
+    if (type == "INFP") { return "The Mediator: Poetic, kind, and altruistic."; }
+    if (type == "INTP") { return "The Logician: Innovative, curious, and logical."; }
+    if (type == "ESTP") { return "The Entrepreneur: Energetic and action-oriented."; }
+    if (type == "ESFP") { return "The Entertainer: Spontaneous, energetic, and enthusiastic."; }
+    if (type == "ENFP") { return "The Campaigner: Enthusiastic, creative, and sociable."; }
+    if (type == "ENTP") { return "The Debater: Smart, curious, and witty."; }
+    if (type == "ESTJ") { return "The Executive: Organized, logical, and assertive."; }
+    if (type == "ESFJ") { return "The Consul: Caring, sociable, and popular."; }
+    if (type == "ENFJ") { return "The Protagonist: Charismatic, inspiring, and altruistic."; }
+    if (type == "ENTJ") { return "The Commander: Bold, imaginative, and strong-willed."; }
+    return "A unique personality type!";
+}
+
+function restartQuiz() {
+    userAnswers = [];
+    currentIndex = 0;
+    document.getElementById("result-section").style.display = "none";
+    document.getElementById("welcome-section").style.display = "block";
+}

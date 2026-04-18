@@ -9,35 +9,176 @@ The website includes a homepage, quiz section, and result display.
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>MBTI Test</title>
-    <script src="script.js" defer></script>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <title>MBTI Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f5f5f5;
+      padding: 40px;
+    }
+    .container {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-    <h1>MBTI Personality Test</h1>
 
-    <h2>Welcome Section</h2>
-    <p>Click below to start your personality test.</p>
-    <button>Start Test</button>
+<div class="container">
 
-    <hr>
+  <!-- Welcome Section -->
+  <div id="welcome-section">
+    <h1>MBTI Personality Quiz</h1>
+    <button onclick="startQuiz()">Start Quiz</button>
+  </div>
 
-    <h2>Quiz Section</h2>
-    <p>Question 1: You prefer to...</p>
-    <button>Stay home</button>
-    <button>Go out</button>
+  <!-- Quiz Section -->
+  <div id="quiz-section" style="display:none;">
+    <h2 id="question-text"></h2>
+    <p id="progress"></p>
+    <button onclick="answerQuestion(true)">Yes</button>
+    <button onclick="answerQuestion(false)">No</button>
+  </div>
 
-    <p>Question 2: You are more...</p>
-    <button>Logical</button>
-    <button>Emotional</button>
+  <!-- Result Section -->
+  <div id="result-section" style="display:none;">
+    <h2 id="result-type"></h2>
+    <p id="result-description"></p>
+    <button onclick="restartQuiz()">Restart</button>
+  </div>
 
-    <br><br>
-    <button>Submit Answers</button>
+</div>
 
-    <hr>
+<script>
+var questions = [
+  { text: "Do you feel energized after spending time with other people?", dimension: "EI", direction: "E" },
+  { text: "Do you prefer quiet time alone to recharge?", dimension: "EI", direction: "I" },
+  { text: "You find networking with strangers daunting.", dimension: "EI", direction: "I"},
 
-    <h2>Result Section</h2>
-    <p>Your MBTI Type: XXXX</p>
+  { text: "Do you focus more on concrete facts and details?", dimension: "SN", direction: "S" },
+  { text: "Do you enjoy thinking about future possibilities?", dimension: "SN", direction: "N" },
+  { text: "You are not interested in interpreting creative works.", dimension: "SN", direction:"S"},
+
+  { text: "Do you make decisions based on logic?", dimension: "TF", direction: "T" },
+  { text: "Do you consider emotions when making decisions?", dimension: "TF", direction: "F" },
+  { text: "Emotions matter more than data to you.", dimension: "TF", direction:"F"},
+
+  { text: "Do you prefer a clear plan?", dimension: "JP", direction: "J" },
+  { text: "Do you like flexibility?", dimension: "JP", direction: "P" },
+  { text: "You let the day unfold naturally.", dimension: "JP", direction: "P"},
+];
+
+var userAnswers = [];
+var currentIndex = 0;
+
+function startQuiz() {
+  currentIndex = 0;
+  userAnswers = [];
+  document.getElementById("welcome-section").style.display = "none";
+  document.getElementById("quiz-section").style.display = "block";
+  showQuestion();
+}
+
+function showQuestion() {
+  document.getElementById("question-text").textContent = questions[currentIndex].text;
+  document.getElementById("progress").textContent =
+    "Question " + (currentIndex + 1) + " of " + questions.length;
+}
+
+function answerQuestion(answer) {
+  userAnswers.push(answer);
+  currentIndex++;
+
+  if (currentIndex < questions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function calculateDimension(answers, dim) {
+  var firstCount = 0;
+  var secondCount = 0;
+
+  for (var i = 0; i < questions.length; i++) {
+    if (questions[i].dimension == dim) {
+      if (answers[i] == true) {
+        if (questions[i].direction == dim[0]) {
+          firstCount++;
+        } else {
+          secondCount++;
+        }
+      } else {
+        if (questions[i].direction == dim[0]) {
+          secondCount++;
+        } else {
+          firstCount++;
+        }
+      }
+    }
+  }
+
+  return firstCount > secondCount ? dim[0] : dim[1];
+}
+
+function showResult() {
+  var result =
+    calculateDimension(userAnswers, "EI") +
+    calculateDimension(userAnswers, "SN") +
+    calculateDimension(userAnswers, "TF") +
+    calculateDimension(userAnswers, "JP");
+
+  document.getElementById("quiz-section").style.display = "none";
+  document.getElementById("result-section").style.display = "block";
+
+  document.getElementById("result-type").textContent =
+    "Your MBTI Type: " + result;
+
+  document.getElementById("result-description").textContent =
+    getDescription(result);
+}
+
+function getDescription(type) {
+  const descriptions = {
+    ISTJ: "Responsible, sincere, analytical.",
+    ISFJ: "The Defender: Dedicated, warm, and protective.",
+    INFJ: "Inspiring, thoughtful, deep.",
+    INTJ: "Strategic, imaginative, determined.",
+    ISTP: "Bold, practical, curious.",
+    ISFP: "Flexible, artistic, charming.",
+    INFP: "Kind, poetic, idealistic.",
+    INTP: "Logical, curious, innovative.",
+    ESTP: "Energetic, action-oriented.",
+    ESFP: "Fun, spontaneous, lively.",
+    ENFP: "Creative, enthusiastic, social.",
+    ENTP: "Witty, curious, clever.",
+    ESTJ: "Organized, assertive, logical.",
+    ESFJ: "Caring, social, supportive.",
+    ENFJ: "Charismatic, inspiring.",
+    ENTJ: "Leader, bold, strategic."
+  };
+  return descriptions[type] || "Unique personality type!";
+}
+
+function restartQuiz() {
+  userAnswers = [];
+  currentIndex = 0;
+  document.getElementById("result-section").style.display = "none";
+  document.getElementById("welcome-section").style.display = "block";
+}
+</script>
+
 </body>
 </html>
