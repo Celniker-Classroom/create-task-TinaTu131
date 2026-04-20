@@ -51,20 +51,27 @@ function calculateDimension(answers, dim) {
     return dim[1];
   }
 }
-  currentIndex = 0; userAnswers = []; // reset the question number to 0, and clear all previous answers.
-  document. getElementById ("welcome-section").style.display = "none";
+function startQuiz(){
+  currentIndex = 0; userAnswers = []; 
+  document.getElementById ("welcome-section").style.display = "none";
   document.getElementById("quiz-section").style.display = "block";
   showQuestion();
+}
  
+function showQuestion(){
   document.getElementById("question-text").textContent = questions[currentIndex]. text; 
-  "Question"+ (currentIndex+1) + "of" + questions.length 
-  
+  "Question"+ (currentIndex+1) + "of" + questions.length;
+}
+ 
+function submitAnswer(answer){
   userAnswers.push(answer); 
   currentIndex = currentIndex +1;
   if (currentIndex < questions.length){
     showQuestion();
   } else {
     showResult();}
+  }
+  
 
 function showResult() {
     var letter1 = calculateDimension(userAnswers, "EI");
@@ -105,4 +112,20 @@ function restartQuiz() {
     currentIndex = 0;
     document.getElementById("result-section").style.display = "none";
     document.getElementById("welcome-section").style.display = "block";
+
+    document.getElementById("start-btn").addEventListener("click", function() {
+    startQuiz();
+});
+
+document.getElementById("agree-btn").addEventListener("click", function() {
+    submitAnswer(true);
+});
+
+document.getElementById("disagree-btn").addEventListener("click", function() {
+    submitAnswer(false);
+});
+
+document.getElementById("restart-btn").addEventListener("click", function() {
+    restartQuiz();
+});
 }
