@@ -59,7 +59,7 @@ function startQuiz(){
 }
  
 function showQuestion(){
-  document.getElementById("question-text").textContent = questions[currentIndex]. text; 
+  document.getElementById("question-text").textContent = questions[currentIndex].text; 
   "Question"+ (currentIndex+1) + "of" + questions.length;
 }
  
@@ -112,10 +112,7 @@ function restartQuiz() {
     currentIndex = 0;
     document.getElementById("result-section").style.display = "none";
     document.getElementById("welcome-section").style.display = "block";
-
-    document.getElementById("start-btn").addEventListener("click", function() {
-    startQuiz();
-});
+}
 
 document.getElementById("agree-btn").addEventListener("click", function() {
     submitAnswer(true);
@@ -128,4 +125,7 @@ document.getElementById("disagree-btn").addEventListener("click", function() {
 document.getElementById("restart-btn").addEventListener("click", function() {
     restartQuiz();
 });
-}
+
+ document.getElementById("start-btn").addEventListener("click", function() {
+    startQuiz();
+});
