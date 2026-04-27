@@ -11,7 +11,7 @@ The website includes a homepage, quiz section, and result display.
 <head>
   <meta charset="UTF-8">
   <title>MBTI Quiz</title>
-
+<link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
@@ -22,7 +22,7 @@ The website includes a homepage, quiz section, and result display.
   <div class="badge">16 Types · 4 Dimensions</div>
 
     <div class="mbti-intro">
-    <p><strong>The Myers-Briggs Type Indicator®</strong> is a introspective self-report questionnaire indicating differing psychological preferences in how people perceive the world and make decisions. Based on Carl Jung's theory, it reveals your natural strengths.</p>
+    <p><strong>The Myers-Briggs Type Indicator</strong> is a introspective self-report questionnaire indicating differing psychological preferences in how people perceive the world and make decisions. Based on Carl Jung's theory, it reveals your natural strengths.</p>
   </div>
 
    <div class="dimensions">
@@ -32,30 +32,29 @@ The website includes a homepage, quiz section, and result display.
     <div class="dim-card"><span>📌 J / P</span> Judging / Perceiving</div>
   </div>
 
-    <h3 style="font-size: 1rem; margin-top: 0;">✨ Famous Personalities by Type (Preview)</h3>
+    <h3 style="font-size: 1rem; margin-top: 0;"> Famous Personalities by Type (Preview)</h3>
   <div class="type-preview">
-    <div class="type-mini">INFJ – Martin Luther King Jr.</div>
-    <div class="type-mini">INTJ – Elon Musk</div>
-    <div class="type-mini">ENFP – Robin Williams</div>
-    <div class="type-mini">ESTJ – Michelle Obama</div>
-    <div class="type-mini">INFP – William Shakespeare</div>
-    <div class="type-mini">ENTJ – Steve Jobs</div>
-    <div class="type-mini">ISFJ – Mother Teresa</div>
-    <div class="type-mini">ISTJ – George Washington</div>
+    <div class="type-mini">INFJ - Martin Luther King Jr.</div>
+    <div class="type-mini">INTJ - Elon Musk</div>
+    <div class="type-mini">ENFP - Robin Williams</div>
+    <div class="type-mini">ESTJ - Michelle Obama</div>
+    <div class="type-mini">INFP - William Shakespeare</div>
+    <div class="type-mini">ENTJ - Steve Jobs</div>
+    <div class="type-mini">ISFJ - Mother Teresa</div>
+    <div class="type-mini">ISTJ - George Washington</div>
   </div>
 
-    <button id="start-btn">🚀 Start the Quiz →</button>
-  <footer>12 questions • 2 minutes • Be honest for accurate results</footer>
+    <button id="start-btn"> Start the Quiz →</button>
 </div>
 
 <!--quiz section-->
 <div id="quiz-section" style="display:none;">
-  <div class="badge">🧩 Answer intuitively</div>
+  <div class="badge"> Answer intuitively</div>
   <h2 id="question-text"></h2>
   
   <div class="progress-area">
     <div class="progress-stats">
-      <span>📊 Test Progress</span>
+      <span>Test Progress</span>
       <span id="progress">1 / 12</span>
     </div>
     <div class="progress-bar-bg">
@@ -67,18 +66,17 @@ The website includes a homepage, quiz section, and result display.
     <button id="agree-btn">✅ Agree</button>
     <button id="disagree-btn">❌ Disagree</button>
   </div>
-  <footer>Pick what feels most natural, not what you think is "right".</footer>
-</div>
 
 <!--result section-->
+</div>
 <div id="result-section" style="display:none;">
-  <div class="subtle-icon">🏆✨</div>
+  <div class="subtle-icon"></div>
   <h2>Your Personality Blueprint</h2>
   <div id="result-type"></div>
   <div id="result-description"></div>
   <div id="famous-people" class="famous-figures"></div>
-  <button id="restart-btn">⟳ Take the test again</button>
-  <footer>MBTI provides insight — every type brings unique value.</footer>
+  <button id="restart-btn"> Take the test again</button>
+  <footer>every type brings unique value</footer>
 </div> 
 
 <script>
@@ -93,7 +91,7 @@ var questions = [
 
   { text: "Do you make decisions based on logic and objective analysis?", dimension: "TF", direction: "T" },
   { text: "Do you consider emotions and people's feelings when making decisions?", dimension: "TF", direction: "F" },
-  { text: "People’s stories and emotions speak louder to you than numbers or data.", dimension: "TF", direction:"F"},
+  { text: "People's stories and emotions speak louder to you than numbers or data.", dimension: "TF", direction:"F"},
 
   { text: "Do you prefer having a clear plan and schedule?", dimension: "JP", direction: "J" },
   { text: "Do you like to stay flexible and adapt as things happen?", dimension: "JP", direction: "P" },
@@ -156,19 +154,12 @@ function calculateDimension(answers, dim) {
       "ENFJ": "Barack Obama, Oprah Winfrey, Martin Luther King",
       "ENTJ": "Steve Jobs, Gordon Ramsay, Margaret Thatcher"
     };
-    return famous[type] || "Many influential people share your type — embrace your strengths!";
+    return famous[type] || "Many influential people share your type!";
   }
-
-function startQuiz(){
-  currentIndex = 0; userAnswers = []; 
-  document.getElementById ("welcome-section").style.display = "none";
-  document.getElementById("quiz-section").style.display = "block";
-  showQuestion();
-}
 
   function updateProgressBar() {
     var fill = document.getElementById("progress-fill");
-    var answered = currentIndex; // 已答数量
+    var answered = currentIndex;
     var percent = (answered / questions.length) * 100;
     if (fill) fill.style.width = percent + "%";
     var progressSpan = document.getElementById("progress");
@@ -186,15 +177,6 @@ function startQuiz(){
       document.getElementById("question-text").textContent = questions[currentIndex].text;
       updateProgressBar();
     }
-  }
- 
-function submitAnswer(answer){
-  userAnswers.push(answer); 
-  currentIndex = currentIndex +1;
-  if (currentIndex < questions.length){
-    showQuestion();
-  } else {
-    showResult();}
   }
   
   function submitAnswer(answer) {
@@ -223,8 +205,11 @@ function showResult() {
     document.getElementById("result-section").style.display = "block";
     document.getElementById("result-type").textContent = "Your MBTI Type: " + result;
     document.getElementById("result-description").textContent = getDescription(result);
-}
 
+    document.getElementById("famous-people").innerHTML =
+      "<strong>Famous people with your type:</strong><br>" +
+      getFamousPeople(result);
+  }
 //start quiz
   function startQuiz() {
     currentIndex = 0; 
@@ -268,13 +253,6 @@ function showResult() {
     };
     return shortDesc[type] || "A unique personality type with remarkable traits.";
   }
-
-function restartQuiz() {
-    userAnswers = [];
-    currentIndex = 0;
-    document.getElementById("result-section").style.display = "none";
-    document.getElementById("welcome-section").style.display = "block";
-}
 
 document.getElementById("agree-btn").addEventListener("click", function() {
     submitAnswer(true);
